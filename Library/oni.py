@@ -3,47 +3,54 @@
 
 import os
 import sys
+import argparse
 
-def executeCommand( args ):
+from Oni import installer
+
+def libraryInfo(name):
     pass
 
-def usage():
-    u = """\
-Intro:
-    Oni is an simple Arduino library manager.
+def libraryInstall(name):
+    i = installer(name)
+    i.install
+    i.check
+    i.finish
 
-Usage:
-    oni command [options] library ...
+def executeCommand(command):
+    if command.commands == 'install':
+        # get the library file path
+        for name in command.library:
+            libraryInstall(name)
 
-command:
-    info    : information of the library
-    install : install library
-    remove  : remove library
-    list    : list all library which have been installed
-    search  : search what you want
-    home    : open the library homepage
-    config  : listing all Oni setup information
-
-example:
-    oni install Grove_Relay
-    """
-    return u
+    if command.commands == 'info':
+        for name in command.library:
+            print command
 
 def parseArgs():
-    pass
+    parser = argparse.ArgumentParser(description="Oni is an simple Arduino library manager.")
+    parser.add_argument('commands',
+                        action='store',
+                        nargs='?',
+                        help='command to manage Arduino libray')
+
+    parser.add_argument('library',
+                        action='store',
+                        nargs='+',
+                        help='name(s) of the library (e.g. "Grove_OLED96x64")')
+
+    args = parser.parse_args()
+
+    return args
 
 def main():
     '''
     The entry for the program
     '''
     #TODO
-    # 1. parse args
+    #x1. parse args
     # 2. implementing some commands: install remove info list search home
     # config
-    # 2. get library's name
-
-    if len(sys.argv) < 2:
-        print usage()
+    #x2. get library's name
 
     args = parseArgs()
     executeCommand(args)
